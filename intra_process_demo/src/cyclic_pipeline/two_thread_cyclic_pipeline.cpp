@@ -34,7 +34,6 @@ struct IncrementerPipe : public rclcpp::Node
     pub = this->create_publisher<std_msgs::msg::Int32>(out, 1);
     pub__ = this->create_publisher<std_msgs::msg::Int32>(out, 1);
     std::weak_ptr<std::remove_pointer<decltype(pub.get())>::type> captured_pub = pub;
-    std::weak_ptr<std::remove_pointer<decltype(pub.get())>::type> captured_pub__ = pub__;
     // Create a subscription on the input topic.
     sub = this->create_subscription<std_msgs::msg::Int32>(
       in,
@@ -56,12 +55,13 @@ struct IncrementerPipe : public rclcpp::Node
         printf(
           "SUB1: Incrementing and sending with value: %d, and address: 0x%" PRIXPTR "\n", msg->data,
           reinterpret_cast<std::uintptr_t>(msg.get()));
-        pub_ptr->publish(std::move(msg));    // Send the message along to the output topic.
-  	std::unique_ptr<std_msgs::msg::Int32> msg__(new std_msgs::msg::Int32());
+        pub_ptr->publish(std::move(msg));    // Send the message along to the output topic.	
+    	//pub__ = this->create_publisher<std_msgs::msg::Int32>(out, 1);
+	//auto pub_ptr__ = captured_pub.lock();
+	std::unique_ptr<std_msgs::msg::Int32> msg__(new std_msgs::msg::Int32());
   	msg__->data = 100;
-       	pub__->publish(std::move(msg__));	
-      });
-    
+       	pub_ptr->publish(std::move(msg__));	
+      }); 
   }
 
   rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr pub;

@@ -42,6 +42,13 @@ target_link_libraries(cyclic_pipeline
   rclcpp::rclcpp
   ${std_msgs_TARGETS})
 
+add_executable(two_thread_cyclic_pipeline
+  src/cyclic_pipeline/two_thread_cyclic_pipeline.cpp)
+target_link_libraries(two_thread_cyclic_pipeline
+  rclcpp::rclcpp
+  ${std_msgs_TARGETS})
+
+
 # A single program with one of each of the image pipeline demo nodes.
 add_executable(image_pipeline_all_in_one
   src/image_pipeline/image_pipeline_all_in_one.cpp)
@@ -96,6 +103,7 @@ target_link_libraries(image_view_node
 install(TARGETS
   two_node_pipeline
   cyclic_pipeline
+  two_thread_cyclic_pipeline
   image_pipeline_all_in_one
   image_pipeline_with_two_image_view
   camera_node
